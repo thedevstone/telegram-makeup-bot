@@ -1,6 +1,7 @@
 from typing import List
 
 import cv2
+import matplotlib.pyplot as plt
 import numpy as np
 
 from file_manager.path_utilities import get_model_path
