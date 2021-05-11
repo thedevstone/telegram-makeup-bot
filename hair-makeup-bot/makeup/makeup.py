@@ -1,4 +1,5 @@
 import cv2
+import matplotlib.pyplot as plt
 import numpy as np
 from skimage.filters import gaussian
 
@@ -43,15 +44,14 @@ def hair(image, mask: np.ndarray, color, dark_hair=False, force=0.1):
         return changed_img
     else:
         out_image = image.copy()
-        b, g, r = color
+        r, g, b = color
         color_mask = np.zeros_like(image)
-        color_mask[:, :, 0] = b
+        color_mask[:, :, 0] = r
         color_mask[:, :, 1] = g
-        color_mask[:, :, 2] = r
-        image_hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-        color_mask_hsv = cv2.cvtColor(color_mask, cv2.COLOR_BGR2HSV)
+        color_mask[:, :, 2] = b
+        image_hsv = cv2.cvtColor(image, cv2.COLOR_RGB2HSV)
+        color_mask_hsv = cv2.cvtColor(color_mask, cv2.COLOR_RGB2HSV)
         image_hsv[:, :, 0:1] = color_mask_hsv[:, :, 0:1]
-        changed_img = cv2.cvtColor(image_hsv, cv2.COLOR_HSV2BGR)
+        changed_img = cv2.cvtColor(image_hsv, cv2.COLOR_HSV2RGB)
         out_image[mask == 255] = changed_img[mask == 255]
-
         return out_image
