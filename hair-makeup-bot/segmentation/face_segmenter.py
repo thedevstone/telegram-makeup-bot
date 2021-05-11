@@ -1,7 +1,6 @@
 from typing import List
 
 import cv2
-import matplotlib.pyplot as plt
 import numpy as np
 
 from file_manager.path_utilities import get_model_path
@@ -15,16 +14,16 @@ CLASSES_TO_SEGMENT = {'skin': True, 'nose': True, 'eye': True, 'brow': True, 'ea
 
 
 class FaceSegmenter:
-    def __init__(self):
+    def __init__(self, image_size=256):
         set_keras_backend()
         # Configuration
         from segmentation import model
-        self.image_size = 256
+        self.image_size = image_size
         # Load the model
         self.inference_model = model.load_model(get_model_path('unet.h5'))
 
     def segment_image(self, img):
-        img = cv2.resize(img, (self.image_size, self.image_size))
+        img = cv2.resize(img, (self.image_size, self.image_size), cv2.INTER_LANCZOS4)
         img = img.reshape((1, img.shape[0], img.shape[1], img.shape[2])).astype('float')
         img1_normalized = img / 255.0
         images_predicted = self.inference_model.predict(img1_normalized)

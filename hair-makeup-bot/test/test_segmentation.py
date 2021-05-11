@@ -14,7 +14,7 @@ if __name__ == '__main__':
     cap.release()
 
     # Align and segment
-    face_aligner = FaceAligner()
+    face_aligner = FaceAligner(desired_face_width=512)
     image, landmarks = face_aligner.align(image)
     plt.imshow(image)
     plt.show()

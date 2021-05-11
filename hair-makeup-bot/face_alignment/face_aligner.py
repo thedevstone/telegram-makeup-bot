@@ -75,7 +75,7 @@ class FaceAligner:
 
         # Apply the affine transformation
         (w, h) = (self.desired_face_width, self.desired_face_height)
-        output = cv2.warpAffine(image, rotation_matrix, (w, h), flags=cv2.INTER_CUBIC)
+        output = cv2.warpAffine(image, rotation_matrix, (w, h), flags=cv2.INTER_LANCZOS4)
 
         # ones = np.ones(shape=(len(shape), 1))
         # landmarks_one = np.hstack([shape, ones])
