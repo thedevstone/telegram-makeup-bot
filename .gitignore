@@ -1,0 +1,27 @@
+# Byte-compiled / optimized / DLL file_system
+__pycache__/
+*.py[cod]
+
+# Configuration yaml
+config.yaml
+
+# Log
+*.log*
+
+# Macos
+.DS_Store
+
+# Idea
+.idea
+
+# Models
+*.h5
+*.pkl
+*.dat
+
+# Images
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
