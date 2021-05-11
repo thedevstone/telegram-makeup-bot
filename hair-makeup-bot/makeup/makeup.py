@@ -53,4 +53,5 @@ def hair(image, mask: np.ndarray, color, dark_hair=False, force=0.1):
         image_hsv[:, :, 0:1] = color_mask_hsv[:, :, 0:1]
         changed_img = cv2.cvtColor(image_hsv, cv2.COLOR_HSV2BGR)
         out_image[mask == 255] = changed_img[mask == 255]
+
         return out_image
