@@ -1,7 +1,8 @@
 import cv2
-import matplotlib.pyplot as plt
 import numpy as np
 from skimage.filters import gaussian
+
+from segmentation.conversions import denormalize
 
 
 def sharpen(img):
@@ -34,9 +35,19 @@ def increase_brightness(hsv, value=30):
     return final_hsv
 
 
-def hair(image, mask: np.ndarray, color, dark_hair=False, force=0.1):
+def hair(image, masks: np.ndarray, color, dark_hair=False, force=0.1):
+    hair_mask = denormalize(masks)[:, :, 6]
+    return colorize(image, hair_mask, color, overlay=dark_hair, force=force)
+
+
+def lips(image, masks: np.ndarray, color, pronounced=False, force=0.1):
+    lips_mask = denormalize(masks)[:, :, 5]
+    return colorize(image, lips_mask, color, overlay=pronounced, force=force)
+
+
+def colorize(image, mask: np.ndarray, color, overlay=False, force=0.1):
     # Create color layer
-    if dark_hair:
+    if overlay:
         colored_image = image.copy()
         colored_image[mask == 255] = color
         # Blend images together
