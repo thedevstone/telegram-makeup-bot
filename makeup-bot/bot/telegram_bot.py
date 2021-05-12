@@ -14,7 +14,7 @@ logger = logging.getLogger(os.path.basename(__file__))
 
 
 class TelegramBot:
-    def __init__(self, config, auth_chat_ids):
+    def __init__(self, config, auth_chat_ids, face_aligner, face_segmenter):
         # Constructor
         self.config = config
         self.auth_chat_ids = auth_chat_ids
@@ -22,29 +22,17 @@ class TelegramBot:
         self.bot = self.updater.bot
         self.dispatcher = self.updater.dispatcher
 
+        # Makeup
+        self.face_aligner = face_aligner
+        self.face_segmenter = face_segmenter
+
         # Commands
         self.utils = bot_utils.BotUtils(config, auth_chat_ids, self.bot)
         self.root = root.RootCommand(config, auth_chat_ids, self.utils)
-        self.hair_makeup = HairMakeup(config, auth_chat_ids, self.utils)
+        self.hair_makeup = HairMakeup(config, auth_chat_ids, self.utils, self.face_aligner, self.face_segmenter)
         self.lips_makeup = LipsMakeup(config, auth_chat_ids, self.utils)
 
         # FSM
-        # Level 2 only callback (no warning)
-        self.makeup_handler = ConversationHandler(
-            entry_points=[
-                CallbackQueryHandler(self.hair_makeup.hair_makeup_context, pattern='^hair_color:\S+$'),
-                CallbackQueryHandler(self.lips_makeup.lips_makeup_context, pattern='^lips_color:\S+$')
-            ],
-            states={
-                bot_states.HAIR: [MessageHandler(callback=self.hair_makeup.apply_makeup, filters=Filters.text)]
-            },
-            fallbacks=[CallbackQueryHandler(self.root.exit, pattern='^' + str(bot_events.EXIT_CLICK) + '$')],
-            per_message=False,
-            map_to_parent={
-                bot_states.END: bot_states.LOGGED,
-                bot_states.MAKEUP: bot_states.MAKEUP
-            }
-        )
         # Level 1 only callback (no warning)
         self.menu_handler = ConversationHandler(
             entry_points=[
@@ -54,12 +42,12 @@ class TelegramBot:
                                      pattern='^' + str(bot_events.CHANGE_LIPS) + '$'),
             ],
             states={
-                bot_states.MAKEUP: [self.makeup_handler]
+                bot_states.MAKEUP: [
+                    CallbackQueryHandler(self.hair_makeup.hair_makeup_context, pattern='^hair_color:\S+$'),
+                    CallbackQueryHandler(self.lips_makeup.lips_makeup_context, pattern='^lips_color:\S+$')],
+                bot_states.HAIR: [MessageHandler(Filters.regex('^saturate 0.\d$') | Filters.photo, self.hair_makeup.apply_makeup)]
             },
-            fallbacks=[CallbackQueryHandler(self.root.exit, pattern='^' + str(bot_events.EXIT_CLICK) + '$'),
-                       CallbackQueryHandler(self.root.show_logged_menu,
-                                            pattern='^' + str(bot_events.BACK_CLICK) + '$')],
-            per_message=True,
+            fallbacks=[CallbackQueryHandler(self.root.exit, pattern='^' + str(bot_events.EXIT_CLICK) + '$')],
             map_to_parent={
                 bot_states.END: bot_states.LOGGED,
                 bot_states.LOGGED: bot_states.LOGGED,

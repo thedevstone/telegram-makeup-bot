@@ -1,0 +1,2 @@
+start - Start the bot and auth
+menu - View the menu

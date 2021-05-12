@@ -2,7 +2,9 @@ import logging
 import os
 
 from bot.telegram_bot import TelegramBot
+from face_alignment.face_aligner import FaceAligner
 from file_manager.path_utilities import ROOT_DIR
+from segmentation.face_segmenter import FaceSegmenter
 from utils import utils
 
 if __name__ == '__main__':
@@ -15,6 +17,11 @@ if __name__ == '__main__':
     # DB
     authChatIds = dict()
 
+    # Makeup
+    face_aligner = FaceAligner(desired_face_width=512)
+    face_segmenter = FaceSegmenter(512)
+
     # BOT
-    telegram_bot = TelegramBot(config, authChatIds)
+    telegram_bot = TelegramBot(config, authChatIds, face_aligner, face_segmenter)
     telegram_bot.start_polling()
+

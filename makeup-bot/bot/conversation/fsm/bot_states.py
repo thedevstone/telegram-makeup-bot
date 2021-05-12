@@ -1,3 +1,3 @@
 # States
-CREDENTIALS, LOGGED, NOT_LOGGED, END = range(4)
-MAKEUP, HAIR, LIPS = range(4, 7)
+CREDENTIALS, LOGGED, NOT_LOGGED, END = map(chr, range(4))
+MAKEUP, HAIR, LIPS = map(chr, range(4, 7))

@@ -9,3 +9,4 @@ segmentation-models~=1.0.1
 requests~=2.25.1
 PyYAML~=5.4.1
 python-telegram-bot~=13.5
+Pillow~=8.1.2
