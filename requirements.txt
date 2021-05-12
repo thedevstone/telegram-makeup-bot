@@ -6,3 +6,6 @@ imutils~=0.5.4
 tensorflow~=2.4.1
 dlib~=19.22.0
 segmentation-models~=1.0.1
+requests~=2.25.1
+PyYAML~=5.4.1
+python-telegram-bot~=13.5
