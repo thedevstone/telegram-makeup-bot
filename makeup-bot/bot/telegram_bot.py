@@ -36,10 +36,10 @@ class TelegramBot:
                 CallbackQueryHandler(self.lips_makeup.lips_makeup_context, pattern='^lips_color:\S+$')
             ],
             states={
+                bot_states.HAIR: [MessageHandler(callback=self.hair_makeup.apply_makeup, filters=Filters.text)]
             },
-            fallbacks=[CallbackQueryHandler(self.root.exit, pattern='^' + str(bot_events.EXIT_CLICK) + '$'),
-                       ],
-            per_message=True,
+            fallbacks=[CallbackQueryHandler(self.root.exit, pattern='^' + str(bot_events.EXIT_CLICK) + '$')],
+            per_message=False,
             map_to_parent={
                 bot_states.END: bot_states.LOGGED,
                 bot_states.MAKEUP: bot_states.MAKEUP
@@ -48,9 +48,9 @@ class TelegramBot:
         # Level 1 only callback (no warning)
         self.menu_handler = ConversationHandler(
             entry_points=[
-                CallbackQueryHandler(self.hair_makeup.hair_makeup_click,
+                CallbackQueryHandler(self.hair_makeup.show_hair_colors,
                                      pattern='^' + str(bot_events.CHANGE_HAIR) + '$'),
-                CallbackQueryHandler(self.lips_makeup.lips_makeup_click,
+                CallbackQueryHandler(self.lips_makeup.show_lip_colors,
                                      pattern='^' + str(bot_events.CHANGE_LIPS) + '$'),
             ],
             states={
@@ -72,8 +72,7 @@ class TelegramBot:
             states={
                 bot_states.NOT_LOGGED: [CommandHandler('start', callback=self.root.start)],
                 bot_states.CREDENTIALS: [MessageHandler(callback=self.root.credentials, filters=Filters.text)],
-                bot_states.LOGGED: [CommandHandler('menu', callback=self.root.show_logged_menu),
-                                    self.menu_handler],
+                bot_states.LOGGED: [CommandHandler('menu', callback=self.root.show_logged_menu), self.menu_handler],
             },
             fallbacks=[CallbackQueryHandler(self.root.exit, pattern='^' + str(bot_events.EXIT_CLICK) + '$')]
         )

@@ -31,6 +31,8 @@ class BotUtils:
             self.auth_chat_ids[chat_id] = dict()
             self.auth_chat_ids[chat_id]["username"] = username
             self.auth_chat_ids[chat_id]["active"] = True
+            self.auth_chat_ids[chat_id]["makeup"] = {'dark-hair': False, 'hair-force': 0.2,
+                                                     'pronounced-lips': False, 'lips-force': 0.2}
 
     def log_admin(self, msg, update: Update, context):
         def is_admin(username):
