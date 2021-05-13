@@ -55,7 +55,9 @@ class HairMakeup(object):
                 image, landmarks = self.face_aligner.align(image)
                 masks = self.face_segmenter.segment_image_keep_aspect_ratio(image)
                 color = COLORS[makeup_config['hair-color']]
-                hair_makeup_image = hair(image, masks, color, dark_hair=False, force=0.2)
+                force = makeup_config['hair-saturate']
+                dark_hair = force > 0
+                hair_makeup_image = hair(image, masks, color, dark_hair=dark_hair, force=force)
 
                 temp_file = image_to_bytearray(hair_makeup_image)
                 update.message.reply_photo(temp_file)

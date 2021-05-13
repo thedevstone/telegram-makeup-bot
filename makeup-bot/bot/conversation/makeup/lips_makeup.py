@@ -55,7 +55,9 @@ class LipsMakeup(object):
                 image, landmarks = self.face_aligner.align(image)
                 masks = self.face_segmenter.segment_image_keep_aspect_ratio(image)
                 color = COLORS[makeup_config['lip-color']]
-                hair_makeup_image = lips(image, masks, color, pronounced=True, force=0.2)
+                force = makeup_config['lip-intensity']
+                pronounced = force > 0
+                hair_makeup_image = lips(image, masks, color, pronounced=pronounced, force=force)
 
                 temp_file = image_to_bytearray(hair_makeup_image)
                 update.message.reply_photo(temp_file)

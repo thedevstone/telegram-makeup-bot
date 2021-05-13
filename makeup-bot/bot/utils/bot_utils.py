@@ -1,7 +1,7 @@
 import logging
 import os
 
-from telegram import Bot, Update
+from telegram import Bot, Update, Message
 
 logger = logging.getLogger(os.path.basename(__file__))
 
