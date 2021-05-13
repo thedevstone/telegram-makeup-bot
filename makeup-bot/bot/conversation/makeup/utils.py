@@ -1,3 +1,7 @@
+from io import BytesIO
+
+import PIL
+import numpy as np
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
 from bot.conversation.fsm import bot_events
@@ -19,3 +23,19 @@ def get_color_keyboard(makeup_type: str):
     kb.append([InlineKeyboardButton(text="⬅️", callback_data=str(bot_events.BACK_CLICK))])
     kb_markup = InlineKeyboardMarkup(kb)
     return kb_markup
+
+
+def get_image_from_bytearray(image: bytes) -> np.ndarray:
+    temp_file = BytesIO(image)
+    image = PIL.Image.open(temp_file)
+    image = np.array(image)
+    return image
+
+
+def image_to_bytearray(image: np.ndarray):
+    temp_file = BytesIO()
+    temp_file.name = 'Segmented.png'
+    im = PIL.Image.fromarray(image)
+    im.save(temp_file, format="png")
+    temp_file.seek(0)
+    return temp_file

@@ -30,7 +30,7 @@ class TelegramBot:
         self.utils = bot_utils.BotUtils(config, auth_chat_ids, self.bot)
         self.root = root.RootCommand(config, auth_chat_ids, self.utils)
         self.hair_makeup = HairMakeup(config, auth_chat_ids, self.utils, self.face_aligner, self.face_segmenter)
-        self.lips_makeup = LipsMakeup(config, auth_chat_ids, self.utils)
+        self.lips_makeup = LipsMakeup(config, auth_chat_ids, self.utils, self.face_aligner, self.face_segmenter)
 
         # FSM
         # Level 1 only callback (no warning)
@@ -45,7 +45,7 @@ class TelegramBot:
                 bot_states.MAKEUP: [
                     CallbackQueryHandler(self.hair_makeup.hair_makeup_context, pattern='^hair_color:\S+$'),
                     CallbackQueryHandler(self.lips_makeup.lips_makeup_context, pattern='^lips_color:\S+$')],
-                bot_states.HAIR: [MessageHandler(Filters.regex('^saturate 0.\d$') | Filters.photo, self.hair_makeup.apply_makeup)]
+                bot_states.HAIR: [MessageHandler(Filters.regex('^intensity 0.\d$') | Filters.photo, self.hair_makeup.apply_makeup)]
             },
             fallbacks=[CallbackQueryHandler(self.root.exit, pattern='^' + str(bot_events.EXIT_CLICK) + '$')],
             map_to_parent={

@@ -32,8 +32,11 @@ class BotUtils:
             self.auth_chat_ids[chat_id]["username"] = username
             self.auth_chat_ids[chat_id]["active"] = True
             self.auth_chat_ids[chat_id]["makeup"] = dict()
-            self.auth_chat_ids[chat_id]["makeup"]['hair-saturate'] = 0.0
-            self.auth_chat_ids[chat_id]["makeup"]['hair-color'] = 'red'
+            self.auth_chat_ids[chat_id]["makeup"]['hair-intensity'] = 0.0
+            self.auth_chat_ids[chat_id]["makeup"]['hair-color'] = 'blue'
+            self.auth_chat_ids[chat_id]["makeup"]['lip-intensity'] = 0.0
+            self.auth_chat_ids[chat_id]["makeup"]['lip-color'] = 'blue'
+
 
     def log_admin(self, msg, update: Update, context):
         def is_admin(username):
