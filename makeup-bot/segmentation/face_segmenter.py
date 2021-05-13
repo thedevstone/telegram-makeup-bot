@@ -26,7 +26,7 @@ class FaceSegmenter:
         img = cv2.resize(img, (self.image_size, self.image_size), cv2.INTER_LANCZOS4)
         img = img.reshape((1, img.shape[0], img.shape[1], img.shape[2])).astype('float')
         img1_normalized = img / 255.0
-        images_predicted = self.inference_model.predict(img1_normalized)
+        images_predicted = self.inference_model(img1_normalized).numpy()
         image_predicted = images_predicted[0]
         return image_predicted
 

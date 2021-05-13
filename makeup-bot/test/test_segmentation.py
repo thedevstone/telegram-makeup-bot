@@ -8,10 +8,10 @@ from segmentation.face_segmenter import FaceSegmenter, denormalize_and_convert_r
 if __name__ == '__main__':
     face_segmenter = FaceSegmenter()
     image = load_img('franco2.png')
-    cap = cv2.VideoCapture(0)
-    ret, image = cap.read()
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    cap.release()
+    # cap = cv2.VideoCapture(0)
+    # ret, image = cap.read()
+    # image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    # cap.release()
 
     # Align and segment
     face_aligner = FaceAligner(desired_face_width=512)
