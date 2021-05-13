@@ -44,8 +44,9 @@ class LipsMakeup(object):
         makeup_config = self.auth_chat_ids[update.effective_chat.id]['makeup']
         if update.message.text:
             message_text = update.message.text
-            saturate_value = float(message_text.split(' ')[1])
-            makeup_config['lip-intensity'] = saturate_value
+            intensity = float(message_text.split(' ')[1])
+            makeup_config['lip-intensity'] = intensity
+            update.message.reply_text(text="Saturate lips mode 'on', intensity = {}".format(intensity))
             return bot_states.LIPS
         if update.message.photo:
             file: File = context.bot.getFile(update.message.photo[-1].file_id)
@@ -79,6 +80,7 @@ class LipsMakeup(object):
         update.callback_query.answer()
         data = update.callback_query.data
         if data == bot_events.STAY_HERE:
+            update.callback_query.message.delete()
             return bot_states.LIPS
         elif data == bot_events.LIPS_COLOR:
             text = "Select a color"

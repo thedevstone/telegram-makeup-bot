@@ -44,9 +44,9 @@ class HairMakeup(object):
         makeup_config = self.auth_chat_ids[update.effective_chat.id]['makeup']
         if update.message.text:
             message_text = update.message.text
-            saturate_value = float(message_text.split(' ')[1])
-            makeup_config['hair-intensity'] = saturate_value
-            logger.info(makeup_config['hair-intensity'])
+            intensity = float(message_text.split(' ')[1])
+            makeup_config['hair-intensity'] = intensity
+            update.message.reply_text(text="Dark hair mode 'on', intensity = {}".format(intensity))
             return bot_states.HAIR
         if update.message.photo:
             file: File = context.bot.getFile(update.message.photo[-1].file_id)
@@ -68,7 +68,7 @@ class HairMakeup(object):
                     [InlineKeyboardButton(text="Send me another photo", callback_data=str(bot_events.STAY_HERE))],
                     [InlineKeyboardButton(text="Change hair color", callback_data=str(bot_events.HAIR_COLOR))],
                     [InlineKeyboardButton(text="❌", callback_data=str(bot_events.EXIT_CLICK))]
-                    ]
+                ]
                 reply_markup = InlineKeyboardMarkup(keyboard)
                 update.message.reply_text(text="What do you want to do?", reply_markup=reply_markup)
                 return bot_states.HAIR
@@ -80,6 +80,7 @@ class HairMakeup(object):
         update.callback_query.answer()
         data = update.callback_query.data
         if data == bot_events.STAY_HERE:
+            update.callback_query.message.delete()
             return bot_states.HAIR
         elif data == bot_events.HAIR_COLOR:
             text = "Select a color"
