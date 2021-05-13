@@ -45,7 +45,14 @@ class TelegramBot:
                 bot_states.MAKEUP: [
                     CallbackQueryHandler(self.hair_makeup.hair_makeup_context, pattern='^hair_color:\S+$'),
                     CallbackQueryHandler(self.lips_makeup.lips_makeup_context, pattern='^lips_color:\S+$')],
-                bot_states.HAIR: [MessageHandler(Filters.regex('^intensity 0.\d$') | Filters.photo, self.hair_makeup.apply_makeup)]
+                bot_states.HAIR: [
+                    MessageHandler(Filters.regex('^intensity 0.\d$') | Filters.photo, self.hair_makeup.apply_makeup),
+                    CallbackQueryHandler(self.hair_makeup.apply_makeup_menu, pattern='^[{}{}{}]$'.format(
+                        str(bot_events.STAY_HERE), str(bot_events.HAIR_COLOR), str(bot_events.EXIT_CLICK)))],
+                bot_states.LIPS: [
+                    MessageHandler(Filters.regex('^intensity 0.\d$') | Filters.photo, self.lips_makeup.apply_makeup),
+                    CallbackQueryHandler(self.lips_makeup.apply_makeup_menu, pattern='^[{}{}{}]$'.format(
+                        str(bot_events.STAY_HERE), str(bot_events.LIPS_COLOR), str(bot_events.EXIT_CLICK)))],
             },
             fallbacks=[CallbackQueryHandler(self.root.exit, pattern='^' + str(bot_events.EXIT_CLICK) + '$')],
             map_to_parent={
