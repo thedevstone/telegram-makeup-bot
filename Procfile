@@ -1,0 +1,1 @@
+python makeup-bot/main.py
