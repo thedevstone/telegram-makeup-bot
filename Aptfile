@@ -1,2 +1,4 @@
 # you can list packages
-python3-opencv
+ffmpeg
+libsm6
+libxext6
