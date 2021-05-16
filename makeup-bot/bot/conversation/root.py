@@ -23,8 +23,7 @@ class RootCommand(object):
         # Store value
         text = "Welcome to *Makeup Bot* by *NiNi* [link](https://github.com/Giulianini/makeup-bot)\n" \
                "Please insert bot password"
-        message = context.bot.send_message(chat_id, text=text, parse_mode=ParseMode.MARKDOWN_V2)
-        self.utils.check_last_and_delete(update, context, message)
+        context.bot.send_message(chat_id, text=text, parse_mode=ParseMode.MARKDOWN_V2)
         return bot_states.CREDENTIALS
 
     def credentials(self, update: Update, context):
@@ -51,6 +50,8 @@ class RootCommand(object):
         return bot_states.LOGGED
 
     def show_logged_menu(self, update: Update, context):
+        if update.message:
+            update.message.delete()
         self.utils.check_last_and_delete(update, context, None)
         keyboard = [[InlineKeyboardButton(text="Hair makeup", callback_data=str(bot_events.CHANGE_HAIR))],
                     [InlineKeyboardButton(text="Lips makeup", callback_data=str(bot_events.CHANGE_LIPS))],

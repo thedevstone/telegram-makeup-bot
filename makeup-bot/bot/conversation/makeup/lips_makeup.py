@@ -30,17 +30,19 @@ class LipsMakeup(object):
         update.callback_query.edit_message_text(text=text, reply_markup=kb_markup)
         return bot_states.MAKEUP
 
-    def lips_makeup_context(self, update: Update, _context: CallbackContext):
+    def lips_makeup_context(self, update: Update, context: CallbackContext):
         makeup_config = self.auth_chat_ids[update.effective_chat.id]['makeup']
         update.callback_query.answer()
         color = update.callback_query.data
         color = color.split(':')[1]
         makeup_config['lip-color'] = color
         text = 'Send me a good photo\n\nIncrease effect with: "intensity 0.x"'
-        update.callback_query.edit_message_text(text=text)
+        message = update.callback_query.edit_message_text(text=text)
+        self.utils.check_last_and_delete(update, context, message)
         return bot_states.LIPS
 
     def apply_makeup(self, update: Update, context: CallbackContext):
+        self.utils.check_last_and_delete(update, context, None)
         makeup_config = self.auth_chat_ids[update.effective_chat.id]['makeup']
         if update.message.text:
             message_text = update.message.text
