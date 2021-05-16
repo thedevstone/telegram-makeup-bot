@@ -1,4 +1,3 @@
-import cv2
 import matplotlib.pyplot as plt
 
 from face_alignment.face_aligner import FaceAligner

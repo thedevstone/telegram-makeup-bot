@@ -13,6 +13,10 @@ if __name__ == '__main__':
     logger = logging.getLogger(os.path.basename(__file__))
     config = utils.load_yaml(os.path.join(ROOT_DIR, "config.yaml"))
     logger.info("Configuration loaded")
+    # Download models
+    utils.download_models("1u4Zq6-mM3xsEswaaa3KeRqjytMSxxHOw", "unet-256.tflite")
+    utils.download_models("1wNfbyCJ-8Z2XFGCbuL_heg5JrnVkSr5u", "shape_predictor_68_face_landmarks.dat")
+    logger.info("Models downloaded")
 
     # DB
     authChatIds = dict()

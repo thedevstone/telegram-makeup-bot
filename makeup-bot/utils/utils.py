@@ -4,6 +4,7 @@ import sys
 from logging.handlers import RotatingFileHandler
 
 import yaml
+from google_drive_downloader import GoogleDriveDownloader as gdd
 
 from file_manager.path_utilities import ROOT_DIR
 
@@ -31,3 +32,9 @@ def load_yaml(file):
 
 def dump_yaml(data, file):
     yaml.dump(data, open(file, 'w'), default_flow_style=False)
+
+
+def download_models(file_id: str, file_name: str):
+    output = os.path.join(ROOT_DIR, 'models', file_name)
+    gdd.download_file_from_google_drive(file_id=file_id,
+                                        dest_path=output)
