@@ -15,9 +15,8 @@ config.yaml
 .idea
 
 # Models
-*.h5
-*.pkl
-*.dat
+models
+images
 
 # Images
 *.png

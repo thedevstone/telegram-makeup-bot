@@ -6,7 +6,7 @@ from image_utils.loading import load_img
 from segmentation.face_segmenter import FaceSegmenter, denormalize_and_convert_rgb
 
 if __name__ == '__main__':
-    face_segmenter = FaceSegmenter()
+    face_segmenter = FaceSegmenter(256)
     image = load_img('franco2.png')
     # cap = cv2.VideoCapture(0)
     # ret, image = cap.read()
@@ -14,7 +14,7 @@ if __name__ == '__main__':
     # cap.release()
 
     # Align and segment
-    face_aligner = FaceAligner(desired_face_width=512)
+    face_aligner = FaceAligner(desired_face_width=256)
     image, landmarks = face_aligner.align(image)
     plt.imshow(image)
     plt.show()

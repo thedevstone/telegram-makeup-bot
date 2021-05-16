@@ -18,8 +18,8 @@ if __name__ == '__main__':
     authChatIds = dict()
 
     # Makeup
-    face_aligner = FaceAligner(desired_face_width=512)
-    face_segmenter = FaceSegmenter(512)
+    face_aligner = FaceAligner(desired_face_width=256)
+    face_segmenter = FaceSegmenter(256)
 
     # BOT
     telegram_bot = TelegramBot(config, authChatIds, face_aligner, face_segmenter)

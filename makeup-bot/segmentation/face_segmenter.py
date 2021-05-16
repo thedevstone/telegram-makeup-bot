@@ -3,11 +3,11 @@ from typing import List
 import cv2
 import numpy as np
 
-from file_manager.path_utilities import get_model_path
 from image_utils.conversion import image_resize_with_border, image_resize_restore_ratio
 from segmentation import conversions
 from segmentation.configuration import color_configuration
 from segmentation.configuration.keras_backend import set_keras_backend
+from segmentation.lite_model import LiteModel
 
 CLASSES_TO_SEGMENT = {'skin': True, 'nose': True, 'eye': True, 'brow': True, 'ear': True, 'mouth': True,
                       'hair': True, 'neck': True, 'cloth': False}
@@ -17,16 +17,19 @@ class FaceSegmenter:
     def __init__(self, image_size=256):
         set_keras_backend()
         # Configuration
-        from segmentation import model
         self.image_size = image_size
         # Load the model
-        self.inference_model = model.load_model(get_model_path('unet.h5'))
+        # from segmentation import model
+        # self.inference_model = model.load_model(get_model_path('unet.h5'))
+        # serialize_tflite_model(self.inference_model, self.image_size)
+        self.lite_model = LiteModel('unet-256.tflite')
 
     def segment_image(self, img):
         img = cv2.resize(img, (self.image_size, self.image_size), cv2.INTER_LANCZOS4)
         img = img.reshape((1, img.shape[0], img.shape[1], img.shape[2])).astype('float')
-        img1_normalized = img / 255.0
-        images_predicted = self.inference_model(img1_normalized).numpy()
+        img1_normalized = (img / 255.0).astype('float32')
+        # images_predicted = self.inference_model(img1_normalized).numpy()
+        images_predicted = self.lite_model.predict(img1_normalized)
         image_predicted = images_predicted[0]
         return image_predicted
 
