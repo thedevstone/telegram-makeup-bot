@@ -67,9 +67,9 @@ class HairMakeup(object):
                 update.message.reply_photo(temp_file)
 
                 keyboard = [
-                    [InlineKeyboardButton(text="Send me another photo", callback_data=str(bot_events.STAY_HERE))],
+                    [InlineKeyboardButton(text="Stay here", callback_data=str(bot_events.STAY_HERE))],
                     [InlineKeyboardButton(text="Change hair color", callback_data=str(bot_events.HAIR_COLOR))],
-                    [InlineKeyboardButton(text="❌", callback_data=str(bot_events.EXIT_CLICK))]
+                    [InlineKeyboardButton(text="⬅", callback_data=str(bot_events.BACK_CLICK))]
                 ]
                 reply_markup = InlineKeyboardMarkup(keyboard)
                 update.message.reply_text(text="What do you want to do?", reply_markup=reply_markup)
