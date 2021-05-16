@@ -1,7 +1,7 @@
 import logging
 import os
 
-from dotenv import dotenv_values, load_dotenv
+from dotenv import load_dotenv
 
 from bot.telegram_bot import TelegramBot
 from face_alignment.face_aligner import FaceAligner

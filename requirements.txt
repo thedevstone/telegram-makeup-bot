@@ -1,6 +1,6 @@
 cmake~=3.18.4
 opencv-python~=4.5.1.48
-matplotlib~=3.4.0
+matplotlib~=3.3.4
 numpy~=1.19.5
 scikit-image~=0.17.2
 imutils~=0.5.4
@@ -12,3 +12,5 @@ python-telegram-bot~=13.5
 Pillow~=8.1.2
 efficientnet~=1.0.0
 dlib~=19.22.0
+python-dotenv~=0.17.1
+googledrivedownloader~=0.4
