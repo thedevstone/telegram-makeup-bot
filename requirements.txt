@@ -12,3 +12,4 @@ python-telegram-bot~=13.5
 Pillow~=8.1.2
 Keras~=2.4.3
 efficientnet~=1.0.0
+dlib~=19.22.0
