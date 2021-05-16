@@ -54,7 +54,8 @@ class TelegramBot:
                     CallbackQueryHandler(self.lips_makeup.apply_makeup_menu, pattern='^[{}{}{}]$'.format(
                         str(bot_events.STAY_HERE), str(bot_events.LIPS_COLOR), str(bot_events.EXIT_CLICK)))],
             },
-            fallbacks=[CallbackQueryHandler(self.root.exit, pattern='^' + str(bot_events.EXIT_CLICK) + '$')],
+            fallbacks=[CallbackQueryHandler(self.root.exit, pattern='^' + str(bot_events.EXIT_CLICK) + '$'),
+                       CallbackQueryHandler(self.root.show_logged_menu, pattern='^' + str(bot_events.BACK_CLICK) + '$')],
             map_to_parent={
                 bot_states.END: bot_states.LOGGED,
                 bot_states.LOGGED: bot_states.LOGGED,

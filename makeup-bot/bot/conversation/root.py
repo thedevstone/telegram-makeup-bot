@@ -52,7 +52,6 @@ class RootCommand(object):
 
     def show_logged_menu(self, update: Update, context):
         self.utils.check_last_and_delete(update, context, None)
-        update.message.delete()
         keyboard = [[InlineKeyboardButton(text="Hair makeup", callback_data=str(bot_events.CHANGE_HAIR))],
                     [InlineKeyboardButton(text="Lips makeup", callback_data=str(bot_events.CHANGE_LIPS))],
                     [InlineKeyboardButton(text="❌", callback_data=str(bot_events.EXIT_CLICK))]
