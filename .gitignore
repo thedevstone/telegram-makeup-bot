@@ -2,8 +2,8 @@
 __pycache__/
 *.py[cod]
 
-# Configuration yaml
-config.yaml
+# Configuration
+.env
 
 # Log
 *.log*

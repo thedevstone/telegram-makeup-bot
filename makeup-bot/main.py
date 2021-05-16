@@ -1,9 +1,10 @@
 import logging
 import os
 
+from dotenv import dotenv_values, load_dotenv
+
 from bot.telegram_bot import TelegramBot
 from face_alignment.face_aligner import FaceAligner
-from file_manager.path_utilities import ROOT_DIR
 from segmentation.face_segmenter import FaceSegmenter
 from utils import utils
 
@@ -11,7 +12,8 @@ if __name__ == '__main__':
     # INIT
     utils.init_logger()
     logger = logging.getLogger(os.path.basename(__file__))
-    config = utils.load_yaml(os.path.join(ROOT_DIR, "config.yaml"))
+    load_dotenv(dotenv_path='../.env')
+    config = os.environ
     logger.info("Configuration loaded")
     # Download models
     utils.download_models("1u4Zq6-mM3xsEswaaa3KeRqjytMSxxHOw", "unet-256.tflite")

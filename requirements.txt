@@ -1,6 +1,6 @@
 cmake~=3.18.4
 opencv-python~=4.5.1.48
-matplotlib~=3.3.4
+matplotlib~=3.4.0
 numpy~=1.19.5
 scikit-image~=0.17.2
 imutils~=0.5.4
@@ -10,3 +10,6 @@ requests~=2.25.1
 PyYAML~=5.4.1
 python-telegram-bot~=13.5
 Pillow~=8.1.2
+Keras~=2.4.3
+efficientnet~=1.0.0
+dlib~=19.22.0
