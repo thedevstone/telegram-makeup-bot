@@ -17,6 +17,7 @@ if __name__ == '__main__':
     logger.info("Configuration loaded")
     # Download models
     utils.download_models("1u4Zq6-mM3xsEswaaa3KeRqjytMSxxHOw", "unet-256.tflite")
+    utils.download_models("1xPkAUsq2JRKGz5GavIZwahsFQ-7no97Z", "unet-512.tflite")
     utils.download_models("1wNfbyCJ-8Z2XFGCbuL_heg5JrnVkSr5u", "shape_predictor_68_face_landmarks.dat")
     logger.info("Models downloaded")
 
@@ -24,8 +25,8 @@ if __name__ == '__main__':
     authChatIds = dict()
 
     # Makeup
-    face_aligner = FaceAligner(desired_face_width=256)
-    face_segmenter = FaceSegmenter(256)
+    face_aligner = FaceAligner(desired_face_width=512)
+    face_segmenter = FaceSegmenter(512)
 
     # BOT
     telegram_bot = TelegramBot(config, authChatIds, face_aligner, face_segmenter)

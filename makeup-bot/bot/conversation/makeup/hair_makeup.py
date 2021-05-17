@@ -1,12 +1,14 @@
 import logging
 import os
 
+import cv2
 from telegram import Update, File, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CallbackContext
 
 from bot.conversation.fsm import bot_states, bot_events
 from bot.conversation.makeup.utils import get_color_keyboard, COLORS, get_image_from_bytearray, image_to_bytearray
 from bot.utils.bot_utils import BotUtils
+from image_utils.conversion import image_resize_with_border
 from makeup.makeup import hair
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -56,12 +58,13 @@ class HairMakeup(object):
                 image_bytearray: bytes = file.download_as_bytearray()  # temporarily dump image to file and read as OpenCV frame
                 image = get_image_from_bytearray(image_bytearray)
 
-                image, landmarks = self.face_aligner.align(image)
+                # image, landmarks = self.face_aligner.align(image)
                 masks = self.face_segmenter.segment_image_keep_aspect_ratio(image)
                 color = COLORS[makeup_config['hair-color']]
                 force = makeup_config['hair-intensity']
                 dark_hair = force > 0
                 hair_makeup_image = hair(image, masks, color, dark_hair=dark_hair, force=force)
+                hair_makeup_image = image_resize_with_border(hair_makeup_image)[0]
 
                 temp_file = image_to_bytearray(hair_makeup_image)
                 update.message.reply_photo(temp_file)

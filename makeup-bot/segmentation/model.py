@@ -2,9 +2,8 @@ import os
 
 import segmentation_models as sm
 import tensorflow
-from keras.models import Model
 from tensorflow import keras
-from efficientnet.tfkeras import EfficientNetB3
+from tensorflow.python.keras.models import Model
 
 from file_manager.path_utilities import ROOT_DIR
 
