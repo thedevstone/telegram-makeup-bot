@@ -77,12 +77,11 @@ class HairMakeup(object):
         else:
             return bot_states.HAIR
 
-    @staticmethod
-    def apply_makeup_menu(update: Update, _context: CallbackContext):
+    def apply_makeup_menu(self, update: Update, _context: CallbackContext):
         update.callback_query.answer()
         data = update.callback_query.data
         if data == bot_events.STAY_HERE:
-            update.callback_query.message.delete()
+            self.utils.delete_user_message(update.callback_query.message)
             return bot_states.HAIR
         elif data == bot_events.HAIR_COLOR:
             text = "Select a color"
@@ -90,5 +89,5 @@ class HairMakeup(object):
             update.callback_query.edit_message_text(text=text, reply_markup=kb_markup)
             return bot_states.MAKEUP
         else:
-            update.callback_query.message.delete()
+            self.utils.delete_user_message(update.callback_query.message)
             return bot_states.LOGGED

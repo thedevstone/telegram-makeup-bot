@@ -1,7 +1,8 @@
 import logging
 import os
 
-from telegram import Bot, Update, Message
+from telegram import Bot, Update
+from telegram.error import BadRequest
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -26,6 +27,13 @@ class BotUtils:
         else:
             pass  # message not present or not passed
 
+    @staticmethod
+    def delete_user_message(message):
+        try:
+            message.delete()
+        except BadRequest:
+            pass
+
     def init_user(self, chat_id, username):
         if chat_id not in self.auth_chat_ids:
             self.auth_chat_ids[chat_id] = dict()
@@ -36,7 +44,6 @@ class BotUtils:
             self.auth_chat_ids[chat_id]["makeup"]['hair-color'] = 'blue'
             self.auth_chat_ids[chat_id]["makeup"]['lip-intensity'] = 0.0
             self.auth_chat_ids[chat_id]["makeup"]['lip-color'] = 'blue'
-
 
     def log_admin(self, msg, update: Update, context):
         def is_admin(username):

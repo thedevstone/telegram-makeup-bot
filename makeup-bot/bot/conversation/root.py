@@ -18,7 +18,8 @@ class RootCommand(object):
         self.utils = conversation_utils
 
     # STATE=START
-    def start(self, update: Update, context):
+    @staticmethod
+    def start(update: Update, context):
         chat_id = update.effective_chat.id
         # Store value
         text = "Welcome to *Makeup Bot* by *NiNi* [link](https://github.com/Giulianini/makeup-bot)\n" \
@@ -30,28 +31,34 @@ class RootCommand(object):
         message: Message = update.message
         chat = message.chat
         text = message.text
-        message.delete()
+        user = message.from_user
+        chat_type = chat.type
         if text != self.config['credentials']:
             text = "🚫 User not allowed 🚫\nPlease insert bot password again"
             message = message.reply_text(text=text, parse_mode=ParseMode.MARKDOWN_V2)
             self.utils.check_last_and_delete(update, context, message)
-            log_msg = "{} ({} {}) denied.".format(chat.username, chat.first_name, chat.last_name)
+            log_msg = "{} ({} {}) denied.".format(user.username, user.first_name, user.last_name)
+            if chat_type == 'group':
+                log_msg = "Group {} from {} ({} {}) denied.".format(chat.title, user.username, user.first_name,
+                                                                    user.last_name)
             logger.warning(log_msg)
             self.utils.log_admin(log_msg, update, context)
             return bot_states.CREDENTIALS
         # Init user if not exists
         self.utils.init_user(chat.id, chat.username)
-        log_msg = "{} ({} {}) active.".format(chat.username, chat.first_name, chat.last_name)
+        log_msg = "{} ({} {}) active.".format(user.username, user.first_name, user.last_name)
+        if chat_type == 'group':
+            log_msg = "Group {} from {} ({} {}) denied.".format(chat.title, user.username, user.first_name,
+                                                                user.last_name)
         logger.warning(log_msg)
         self.utils.log_admin(log_msg, update, context)
         text = "Login succeeded"
-        message = message.reply_text(text=text, parse_mode=ParseMode.MARKDOWN_V2)
-        self.utils.check_last_and_delete(update, context, message)
+        message_out = message.reply_text(text=text, parse_mode=ParseMode.MARKDOWN_V2)
+        self.utils.delete_user_message(message)
+        self.utils.check_last_and_delete(update, context, message_out)
         return bot_states.LOGGED
 
     def show_logged_menu(self, update: Update, context):
-        if update.message:
-            update.message.delete()
         self.utils.check_last_and_delete(update, context, None)
         keyboard = [[InlineKeyboardButton(text="Hair makeup", callback_data=str(bot_events.CHANGE_HAIR))],
                     [InlineKeyboardButton(text="Lips makeup", callback_data=str(bot_events.CHANGE_LIPS))],
@@ -61,6 +68,7 @@ class RootCommand(object):
         # Check if callback or message
         if update.message:
             update.message.reply_text(text="Menu", reply_markup=reply_markup)
+            self.utils.delete_user_message(update.message)
         elif update.callback_query:
             update.callback_query.edit_message_text(text="Menu", reply_markup=reply_markup)
         return bot_states.LOGGED
