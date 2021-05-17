@@ -17,10 +17,3 @@ __pycache__/
 # Models
 models
 images
-
-# Images
-*.png
-*.jpg
-*.jpeg
-*.gif
-*.bmp
