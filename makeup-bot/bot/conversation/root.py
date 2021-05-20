@@ -33,12 +33,13 @@ class RootCommand(object):
         text = message.text
         user = message.from_user
         chat_type = chat.type
+        logger.info(chat_type)
         if text != self.config['credentials']:
             text = "🚫 User not allowed 🚫\nPlease insert bot password again"
             message = message.reply_text(text=text, parse_mode=ParseMode.MARKDOWN_V2)
             self.utils.check_last_and_delete(update, context, message)
             log_msg = "{} ({} {}) denied.".format(user.username, user.first_name, user.last_name)
-            if chat_type == 'group' or 'supergroup':
+            if chat_type == 'group' or chat_type == 'supergroup':
                 log_msg = "Group {} from {} ({} {}) denied.".format(chat.title, user.username, user.first_name,
                                                                     user.last_name)
             logger.warning(log_msg)
@@ -47,8 +48,8 @@ class RootCommand(object):
         # Init user if not exists
         self.utils.init_user(chat.id, chat.username)
         log_msg = "{} ({} {}) active.".format(user.username, user.first_name, user.last_name)
-        if chat_type == 'group' or 'supergroup':
-            log_msg = "Group {} from {} ({} {}) denied.".format(chat.title, user.username, user.first_name,
+        if chat_type == 'group' or chat_type == 'supergroup':
+            log_msg = "Group {} from {} ({} {}) active.".format(chat.title, user.username, user.first_name,
                                                                 user.last_name)
         logger.warning(log_msg)
         self.utils.log_admin(log_msg, update, context)

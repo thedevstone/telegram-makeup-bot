@@ -60,7 +60,8 @@ class TelegramBot:
                 bot_states.END: bot_states.LOGGED,
                 bot_states.LOGGED: bot_states.LOGGED,
                 bot_states.NOT_LOGGED: bot_states.NOT_LOGGED
-            }
+            },
+            per_user=False,
         )
         # Level 0
         self.conversationHandler = ConversationHandler(
@@ -70,7 +71,8 @@ class TelegramBot:
                 bot_states.CREDENTIALS: [MessageHandler(callback=self.root.credentials, filters=Filters.text)],
                 bot_states.LOGGED: [CommandHandler('menu', callback=self.root.show_logged_menu), self.menu_handler],
             },
-            fallbacks=[CallbackQueryHandler(self.root.exit, pattern='^' + str(bot_events.EXIT_CLICK) + '$')]
+            fallbacks=[CallbackQueryHandler(self.root.exit, pattern='^' + str(bot_events.EXIT_CLICK) + '$')],
+            per_user=False,
         )
         # Init handlers
         self.dispatcher.add_handler(self.conversationHandler)

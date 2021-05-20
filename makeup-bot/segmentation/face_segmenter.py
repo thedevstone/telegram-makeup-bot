@@ -3,6 +3,7 @@ from typing import List
 import cv2
 import numpy as np
 
+from file_manager.path_utilities import get_model_path
 from image_utils.conversion import image_resize_with_border, image_resize_restore_ratio
 from segmentation import conversions
 from segmentation.configuration import color_configuration
@@ -20,6 +21,7 @@ class FaceSegmenter:
         self.image_size = image_size
         # Load the model
         # from segmentation import model
+        # from segmentation.model import serialize_tflite_model
         # self.inference_model = model.load_model(get_model_path('unet.h5'))
         # serialize_tflite_model(self.inference_model, self.image_size)
         self.lite_model = LiteModel('unet-{}.tflite'.format(self.image_size))
